@@ -22,10 +22,10 @@ class _FifthPageState extends State<FifthPage> {
   bool _submitted = false;
   bool _anonymous = false;
   bool _accept = false;
-  String _preferredChannel = 'Email';
-  String _language = 'Français';
-  String _category = 'Question générale';
-  String _country = 'France';
+  String? _preferredChannel;
+  String? _language;
+  String? _category;
+  String? _country;
   AutovalidateMode _autovalidate = AutovalidateMode.disabled;
 
   // Dispose
@@ -41,33 +41,33 @@ class _FifthPageState extends State<FifthPage> {
   }
 
   // Validators
-  String? _validateNotEmpty(String? v, {String field = 'Ce champ'}) {
-    if (v == null || v.trim().isEmpty) return '$field est requis';
+  String? _validateNotEmpty(String? v, {String field = '这个领域'}) {
+    if (v == null || v.trim().isEmpty) return '$field 是必须的';
     return null;
   }
 
   String? _validateEmail(String? value) {
-    if (_anonymous) return null; // pas d'email requis si anonyme
-    if (value == null || value.trim().isEmpty) return 'Email requis';
+    if (_anonymous) return null;
+    if (value == null || value.trim().isEmpty) return '需要电子邮件';
     final emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
-    if (!emailRegex.hasMatch(value.trim())) return 'Format email invalide';
+    if (!emailRegex.hasMatch(value.trim())) return '电子邮件格式无效';
     return null;
   }
 
   String? _validatePhone(String? value) {
-    if (_preferredChannel != 'Téléphone') return null;
+    if (_preferredChannel != '电话') return null;
     if (value == null || value.trim().isEmpty) {
-      return 'Numéro requis pour un contact téléphonique';
+      return '所需电话联系号码';
     }
     final digits = value.replaceAll(RegExp(r'\D'), '');
-    if (digits.length < 6) return 'Numéro trop court';
+    if (digits.length < 6) return '号码太短';
     return null;
   }
 
   String? _validateMessage(String? value) {
-    if (value == null || value.trim().isEmpty) return 'Message requis';
+    if (value == null || value.trim().isEmpty) return '需要留言';
     if (value.trim().length < 20) {
-      return 'Le message doit contenir au moins 20 caractères';
+      return '消息必须至少包含 20 个字符';
     }
     return null;
   }
@@ -80,7 +80,7 @@ class _FifthPageState extends State<FifthPage> {
 
     if (!_accept) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Vous devez accepter la mention fictive/roleplay.')),
+        const SnackBar(content: Text('你必须接受向政府屈服并成为国家奴隶的指控')),
       );
       return;
     }
@@ -103,10 +103,6 @@ class _FifthPageState extends State<FifthPage> {
     setState(() {
       _submitted = false;
       _accept = false;
-      _preferredChannel = 'Email';
-      _language = 'Français';
-      _category = 'Question générale';
-      _country = 'France';
       _autovalidate = AutovalidateMode.disabled;
     });
   }
@@ -153,7 +149,7 @@ class _FifthPageState extends State<FifthPage> {
                                 ),
                                 validator: (v) {
                                   if (_anonymous) return null;
-                                  return _validateNotEmpty(v, field: 'Nom');
+                                  return _validateNotEmpty(v, field: '姓名');
                                 },
                               ),
                               const SizedBox(height: 12),
@@ -196,11 +192,11 @@ class _FifthPageState extends State<FifthPage> {
                                   border: OutlineInputBorder(),
                                 ),
                                 items: const [
-                                  DropdownMenuItem(value: 'France', child: Text('France (les arabes)')),
+                                  DropdownMenuItem(value: 'France', child: Text('France')),
                                   DropdownMenuItem(value: 'Belgique', child: Text('Belgique (les arbres)')),
                                   DropdownMenuItem(value: 'Suisse', child: Text('Suisse (les fromages)')),
                                   DropdownMenuItem(value: 'Canada', child: Text('Canada (inshallah)')),
-                                  DropdownMenuItem(value: 'Autre', child: Text('Autre (pas les arabes)')),
+                                  DropdownMenuItem(value: 'Autre', child: Text('Autre')),
                                 ],
                                 onChanged: (v) => setState(() => _country = v ?? 'France'),
                               ),
@@ -214,7 +210,7 @@ class _FifthPageState extends State<FifthPage> {
                                   border: OutlineInputBorder(),
                                 ),
                                 items: const [
-                                  DropdownMenuItem(value: 'Français', child: Text('Français (arabe)')),
+                                  DropdownMenuItem(value: 'Français', child: Text('Français')),
                                   DropdownMenuItem(value: 'Anglais', child: Text('Anglais (English)')),
                                   DropdownMenuItem(value: 'Chinois (simplifié)', child: Text('Ching Chong')),
                                 ],
@@ -226,15 +222,15 @@ class _FifthPageState extends State<FifthPage> {
                               DropdownButtonFormField<String>(
                                 value: _preferredChannel,
                                 decoration: const InputDecoration(
-                                  labelText: 'Canal de réponse préféré (fictif)',
+                                  labelText: '首选响应渠道',
                                   border: OutlineInputBorder(),
                                 ),
                                 items: const [
-                                  DropdownMenuItem(value: 'Email', child: Text('Email')),
-                                  DropdownMenuItem(value: 'Téléphone', child: Text('Téléphone')),
-                                  DropdownMenuItem(value: 'Courrier', child: Text('Courrier')),
+                                  DropdownMenuItem(value: '电子邮件', child: Text('电子邮件')),
+                                  DropdownMenuItem(value: '电话', child: Text('电话')),
+                                  DropdownMenuItem(value: '邮件', child: Text('邮件')),
                                 ],
-                                onChanged: (v) => setState(() => _preferredChannel = v ?? 'Email'),
+                                onChanged: (v) => setState(() => _preferredChannel = v ?? '电子邮件'),
                               ),
                               const SizedBox(height: 12),
 
@@ -242,17 +238,17 @@ class _FifthPageState extends State<FifthPage> {
                               DropdownButtonFormField<String>(
                                 value: _category,
                                 decoration: const InputDecoration(
-                                  labelText: 'Catégorie de la demande',
+                                  labelText: '请求类别',
                                   border: OutlineInputBorder(),
                                 ),
                                 items: const [
-                                  DropdownMenuItem(value: 'Question générale', child: Text('Question générale')),
-                                  DropdownMenuItem(value: 'Demande d’adhésion (fictive)', child: Text('Demande d’adhésion (fictive)')),
-                                  DropdownMenuItem(value: 'Presse / Média', child: Text('Presse / Média')),
-                                  DropdownMenuItem(value: 'Événements (fictif)', child: Text('Événements (fictif)')),
-                                  DropdownMenuItem(value: 'Autre', child: Text('Autre')),
+                                  DropdownMenuItem(value: '一般问题', child: Text('一般问题')),
+                                  DropdownMenuItem(value: '会员申请', child: Text('会员申请')),
+                                  DropdownMenuItem(value: '新闻/媒体', child: Text('新闻/媒体')),
+                                  DropdownMenuItem(value: '活动', child: Text('活动')),
+                                  DropdownMenuItem(value: '其他', child: Text('其他')),
                                 ],
-                                onChanged: (v) => setState(() => _category = v ?? 'Question générale'),
+                                onChanged: (v) => setState(() => _category = v ?? '一般问题'),
                               ),
                               const SizedBox(height: 12),
 
@@ -260,10 +256,10 @@ class _FifthPageState extends State<FifthPage> {
                               TextFormField(
                                 controller: _subjectController,
                                 decoration: const InputDecoration(
-                                  labelText: 'Sujet',
+                                  labelText: '主题',
                                   border: OutlineInputBorder(),
                                 ),
-                                validator: (v) => _validateNotEmpty(v, field: 'Sujet'),
+                                validator: (v) => _validateNotEmpty(v, field: '主题'),
                               ),
                               const SizedBox(height: 12),
 
@@ -273,7 +269,7 @@ class _FifthPageState extends State<FifthPage> {
                                 maxLines: 6,
                                 minLines: 4,
                                 decoration: const InputDecoration(
-                                  labelText: 'Message',
+                                  labelText: '信息',
                                   alignLabelWithHint: true,
                                   border: OutlineInputBorder(),
                                 ),
@@ -328,26 +324,26 @@ class _FifthPageState extends State<FifthPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'Récapitulatif (fictif)',
+                            '概括',
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 8),
-                          Text('Anonyme : ${_anonymous ? "Oui" : "Non"}'),
+                          Text('匿名的 : ${_anonymous ? "是的" : "不"}'),
                           if (!_anonymous) ...[
-                            Text('Nom : ${_nameController.text}'),
+                            Text('姓名 : ${_nameController.text}'),
                             if (_orgController.text.trim().isNotEmpty)
-                              Text('Organisation : ${_orgController.text}'),
-                            Text('Email : ${_emailController.text}'),
+                              Text('组织 : ${_orgController.text}'),
+                            Text('电子邮件 : ${_emailController.text}'),
                           ],
-                          if (_preferredChannel == 'Téléphone')
-                            Text('Téléphone : ${_phoneController.text}'),
-                          Text('Pays/Région : $_country'),
-                          Text('Langue : $_language'),
-                          Text('Canal préféré : $_preferredChannel'),
-                          Text('Catégorie : $_category'),
-                          Text('Sujet : ${_subjectController.text}'),
+                          if (_preferredChannel == '电话')
+                            Text('电话 : ${_phoneController.text}'),
+                          Text('国家/地区 : $_country'),
+                          Text('语言 : $_language'),
+                          Text('最喜欢的频道 : $_preferredChannel'),
+                          Text('类别 : $_category'),
+                          Text('主题 : ${_subjectController.text}'),
                           const SizedBox(height: 8),
-                          const Text('Message :'),
+                          const Text('信息 :'),
                           const SizedBox(height: 4),
                           Container(
                             width: double.infinity,
@@ -360,7 +356,7 @@ class _FifthPageState extends State<FifthPage> {
                           ),
                           const SizedBox(height: 12),
                           const Text(
-                            'Merci ! Dans ce scénario de roleplay, votre message serait reçu et traité par le « service communication ». 🌟',
+                            '谢谢 🌟',
                           ),
                         ],
                       ),
