@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:test_app/gauge.dart';
 
 Map<String, double> chine = {
-  "忠诚": 0.4,
-  "揭发": 0.7,
-  "共产主义": 0.6,
-  "狗被吃掉了": 0.8,
-  "对美国人的仇恨": 0.5,
-  "提交": 0.9,
+  "Loyauté": 0.4,
+  "Dénonciation": 0.7,
+  "Communisme": 0.6,
+  "Le chien a été mangé": 0.8,
+  "Haine envers les Américains": 0.5,
+  "Soumission": 0.9,
 };
 
 class FourthPage extends StatefulWidget {
@@ -27,7 +27,6 @@ class _FourthPageState extends State<FourthPage> {
           children: <Widget>[
             ClipRRect(
               child: Image.asset('assets/photo/chineseSmiley.png',
-                  // width: 300,
                   height: 150,
                   fit: BoxFit.fill),
             ),

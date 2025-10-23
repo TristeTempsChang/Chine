@@ -36,7 +36,7 @@ class _SecondPageState extends State<SecondPage> {
     final isNegative = counter < 0;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("我操你的死人"),
+        title: const Text("Crédits sociaux de Tristan"),
         centerTitle: true,
       ),
       body: Center(
@@ -84,7 +84,7 @@ class _SecondPageState extends State<SecondPage> {
             ),
             ElevatedButton(
               onPressed: _resetCounter,
-              child: const Text("重置"),
+              child: const Text("Réinitialiser"),
             ),
           ],
         ),

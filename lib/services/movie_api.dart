@@ -1,10 +1,8 @@
-
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/movie.dart';
 
 class MovieApi {
-  // Mets ta clé TMDB ici
   static const String _apiKey = '2bc9907efccdbcc44d713a5725bc05c3';
 
   static Future<List<Movie>> fetchPopular({int page = 1}) async {
@@ -13,7 +11,7 @@ class MovieApi {
       '/3/movie/popular',
       <String, String>{
         'api_key': _apiKey,
-        'language': 'zh-CN',
+        'language': 'fr',
         'page': '$page',
       },
     );
@@ -29,5 +27,18 @@ class MovieApi {
         .toList();
 
     return results;
+  }
+
+  static Future<Movie?> fetchById(int id) async {
+    final url = Uri.parse(
+        'https://api.themoviedb.org/3/movie/$id?api_key=TON_API_KEY&language=fr-FR');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body);
+      return Movie.fromJson(json);
+    } else {
+      return null;
+    }
   }
 }

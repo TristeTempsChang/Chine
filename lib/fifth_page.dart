@@ -9,8 +9,6 @@ class FifthPage extends StatefulWidget {
 
 class _FifthPageState extends State<FifthPage> {
   final _formKey = GlobalKey<FormState>();
-
-  // Controllers
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _subjectController = TextEditingController();
@@ -18,7 +16,6 @@ class _FifthPageState extends State<FifthPage> {
   final _phoneController = TextEditingController();
   final _orgController = TextEditingController();
 
-  // State
   bool _submitted = false;
   bool _anonymous = false;
   bool _accept = false;
@@ -28,7 +25,6 @@ class _FifthPageState extends State<FifthPage> {
   String? _country;
   AutovalidateMode _autovalidate = AutovalidateMode.disabled;
 
-  // Dispose
   @override
   void dispose() {
     _nameController.dispose();
@@ -40,34 +36,33 @@ class _FifthPageState extends State<FifthPage> {
     super.dispose();
   }
 
-  // Validators
-  String? _validateNotEmpty(String? v, {String field = '这个领域'}) {
-    if (v == null || v.trim().isEmpty) return '$field 是必须的';
+  String? _validateNotEmpty(String? v, {String field = 'Ce champ'}) {
+    if (v == null || v.trim().isEmpty) return '$field est obligatoire';
     return null;
   }
 
   String? _validateEmail(String? value) {
     if (_anonymous) return null;
-    if (value == null || value.trim().isEmpty) return '需要电子邮件';
+    if (value == null || value.trim().isEmpty) return 'L’adresse e-mail est requise';
     final emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
-    if (!emailRegex.hasMatch(value.trim())) return '电子邮件格式无效';
+    if (!emailRegex.hasMatch(value.trim())) return 'Format d’e-mail invalide';
     return null;
   }
 
   String? _validatePhone(String? value) {
-    if (_preferredChannel != '电话') return null;
+    if (_preferredChannel != 'Téléphone') return null;
     if (value == null || value.trim().isEmpty) {
-      return '所需电话联系号码';
+      return 'Numéro de téléphone requis';
     }
     final digits = value.replaceAll(RegExp(r'\D'), '');
-    if (digits.length < 6) return '号码太短';
+    if (digits.length < 6) return 'Numéro trop court';
     return null;
   }
 
   String? _validateMessage(String? value) {
-    if (value == null || value.trim().isEmpty) return '需要留言';
+    if (value == null || value.trim().isEmpty) return 'Un message est requis';
     if (value.trim().length < 20) {
-      return '消息必须至少包含 20 个字符';
+      return 'Le message doit contenir au moins 20 caractères';
     }
     return null;
   }
@@ -80,7 +75,7 @@ class _FifthPageState extends State<FifthPage> {
 
     if (!_accept) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('你必须接受向政府屈服并成为国家奴隶的指控')),
+        const SnackBar(content: Text('Vous devez accepter les conditions avant de soumettre.')),
       );
       return;
     }
@@ -124,7 +119,7 @@ class _FifthPageState extends State<FifthPage> {
                     child: Column(
                       children: [
                         const Text(
-                          '与该党联系的表格',
+                          'Formulaire de contact du Parti',
                           style: TextStyle(fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
                         ),
@@ -144,12 +139,12 @@ class _FifthPageState extends State<FifthPage> {
                               TextFormField(
                                 controller: _nameController,
                                 decoration: const InputDecoration(
-                                  labelText: '全名',
+                                  labelText: 'Nom complet',
                                   border: OutlineInputBorder(),
                                 ),
                                 validator: (v) {
                                   if (_anonymous) return null;
-                                  return _validateNotEmpty(v, field: '姓名');
+                                  return _validateNotEmpty(v, field: 'Nom');
                                 },
                               ),
                               const SizedBox(height: 12),
@@ -157,7 +152,7 @@ class _FifthPageState extends State<FifthPage> {
                               TextFormField(
                                 controller: _orgController,
                                 decoration: const InputDecoration(
-                                  labelText: '组织',
+                                  labelText: 'Organisation',
                                   border: OutlineInputBorder(),
                                 ),
                               ),
@@ -167,7 +162,7 @@ class _FifthPageState extends State<FifthPage> {
                                 controller: _emailController,
                                 keyboardType: TextInputType.emailAddress,
                                 decoration: const InputDecoration(
-                                  labelText: '电子邮件',
+                                  labelText: 'E-mail',
                                   border: OutlineInputBorder(),
                                 ),
                                 validator: _validateEmail,
@@ -178,7 +173,7 @@ class _FifthPageState extends State<FifthPage> {
                                 controller: _phoneController,
                                 keyboardType: TextInputType.phone,
                                 decoration: const InputDecoration(
-                                  labelText: '电话',
+                                  labelText: 'Téléphone',
                                   border: OutlineInputBorder(),
                                 ),
                                 validator: _validatePhone,
@@ -188,7 +183,7 @@ class _FifthPageState extends State<FifthPage> {
                               DropdownButtonFormField<String>(
                                 value: _country,
                                 decoration: const InputDecoration(
-                                  labelText: '国家/地区',
+                                  labelText: 'Pays/Région',
                                   border: OutlineInputBorder(),
                                 ),
                                 items: const [
@@ -202,74 +197,69 @@ class _FifthPageState extends State<FifthPage> {
                               ),
                               const SizedBox(height: 12),
 
-                              // Langue
                               DropdownButtonFormField<String>(
                                 value: _language,
                                 decoration: const InputDecoration(
-                                  labelText: '响应语言',
+                                  labelText: 'Langue de réponse',
                                   border: OutlineInputBorder(),
                                 ),
                                 items: const [
                                   DropdownMenuItem(value: 'Français', child: Text('Français')),
                                   DropdownMenuItem(value: 'Anglais', child: Text('Anglais (English)')),
-                                  DropdownMenuItem(value: 'Chinois (simplifié)', child: Text('Ching Chong')),
+                                  DropdownMenuItem(value: 'Chinois (simplifié)', child: Text('Chinois')),
                                 ],
                                 onChanged: (v) => setState(() => _language = v ?? 'Français'),
                               ),
                               const SizedBox(height: 12),
 
-                              // Préférence de réponse
                               DropdownButtonFormField<String>(
                                 value: _preferredChannel,
                                 decoration: const InputDecoration(
-                                  labelText: '首选响应渠道',
+                                  labelText: 'Canal de contact préféré',
                                   border: OutlineInputBorder(),
                                 ),
                                 items: const [
-                                  DropdownMenuItem(value: '电子邮件', child: Text('电子邮件')),
-                                  DropdownMenuItem(value: '电话', child: Text('电话')),
-                                  DropdownMenuItem(value: '邮件', child: Text('邮件')),
+                                  DropdownMenuItem(value: 'E-mail', child: Text('E-mail')),
+                                  DropdownMenuItem(value: 'Téléphone', child: Text('Téléphone')),
+                                  DropdownMenuItem(value: 'Courrier', child: Text('Courrier')),
                                 ],
-                                onChanged: (v) => setState(() => _preferredChannel = v ?? '电子邮件'),
+                                onChanged: (v) => setState(() => _preferredChannel = v ?? 'E-mail'),
                               ),
                               const SizedBox(height: 12),
 
-                              // Catégorie
                               DropdownButtonFormField<String>(
                                 value: _category,
                                 decoration: const InputDecoration(
-                                  labelText: '请求类别',
+                                  labelText: 'Catégorie de la demande',
                                   border: OutlineInputBorder(),
                                 ),
                                 items: const [
-                                  DropdownMenuItem(value: '一般问题', child: Text('一般问题')),
-                                  DropdownMenuItem(value: '会员申请', child: Text('会员申请')),
-                                  DropdownMenuItem(value: '新闻/媒体', child: Text('新闻/媒体')),
-                                  DropdownMenuItem(value: '活动', child: Text('活动')),
-                                  DropdownMenuItem(value: '其他', child: Text('其他')),
+                                  DropdownMenuItem(value: 'Question générale', child: Text('Question générale')),
+                                  DropdownMenuItem(value: 'Adhésion', child: Text('Demande d’adhésion')),
+                                  DropdownMenuItem(value: 'Presse', child: Text('Presse / Médias')),
+                                  DropdownMenuItem(value: 'Événement', child: Text('Événement')),
+                                  DropdownMenuItem(value: 'Autre', child: Text('Autre')),
                                 ],
-                                onChanged: (v) => setState(() => _category = v ?? '一般问题'),
+                                onChanged: (v) => setState(() => _category = v ?? 'Question générale'),
                               ),
                               const SizedBox(height: 12),
 
-                              // Sujet
                               TextFormField(
                                 controller: _subjectController,
                                 decoration: const InputDecoration(
-                                  labelText: '主题',
+                                  labelText: 'Sujet',
                                   border: OutlineInputBorder(),
                                 ),
-                                validator: (v) => _validateNotEmpty(v, field: '主题'),
+                                validator: (v) => _validateNotEmpty(v, field: 'Sujet'),
                               ),
                               const SizedBox(height: 12),
 
-                              // Message
                               TextFormField(
                                 controller: _messageController,
                                 maxLines: 6,
                                 minLines: 4,
                                 decoration: const InputDecoration(
-                                  labelText: '信息',
+                                  labelText: 'Message',
                                   alignLabelWithHint: true,
                                   border: OutlineInputBorder(),
                                 ),
@@ -277,23 +267,21 @@ class _FifthPageState extends State<FifthPage> {
                               ),
                               const SizedBox(height: 12),
 
-                              // Consentement fictif
                               CheckboxListTile(
                                 value: _accept,
                                 onChanged: (v) => setState(() => _accept = v ?? false),
-                                title: const Text('我将我的身体与灵魂献给党，并献上我的所有后代'),
+                                title: const Text('J’accepte les conditions du Parti.'),
                                 controlAffinity: ListTileControlAffinity.leading,
                               ),
                               const SizedBox(height: 8),
 
-                              // Actions
                               Row(
                                 children: [
                                   Expanded(
                                     child: OutlinedButton.icon(
                                       onPressed: _onReset,
                                       icon: const Icon(Icons.refresh),
-                                      label: const Text('重置'),
+                                      label: const Text('Réinitialiser'),
                                     ),
                                   ),
                                   const SizedBox(width: 12),
@@ -301,7 +289,7 @@ class _FifthPageState extends State<FifthPage> {
                                     child: ElevatedButton.icon(
                                       onPressed: _onSubmit,
                                       icon: const Icon(Icons.send),
-                                      label: const Text('送走我的灵魂'),
+                                      label: const Text('Envoyer'),
                                     ),
                                   ),
                                 ],
@@ -324,26 +312,26 @@ class _FifthPageState extends State<FifthPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            '概括',
+                            'Récapitulatif',
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 8),
-                          Text('匿名的 : ${_anonymous ? "是的" : "不"}'),
+                          Text('Anonyme : ${_anonymous ? "Oui" : "Non"}'),
                           if (!_anonymous) ...[
-                            Text('姓名 : ${_nameController.text}'),
+                            Text('Nom : ${_nameController.text}'),
                             if (_orgController.text.trim().isNotEmpty)
-                              Text('组织 : ${_orgController.text}'),
-                            Text('电子邮件 : ${_emailController.text}'),
+                              Text('Organisation : ${_orgController.text}'),
+                            Text('E-mail : ${_emailController.text}'),
                           ],
-                          if (_preferredChannel == '电话')
-                            Text('电话 : ${_phoneController.text}'),
-                          Text('国家/地区 : $_country'),
-                          Text('语言 : $_language'),
-                          Text('最喜欢的频道 : $_preferredChannel'),
-                          Text('类别 : $_category'),
-                          Text('主题 : ${_subjectController.text}'),
+                          if (_preferredChannel == 'Téléphone')
+                            Text('Téléphone : ${_phoneController.text}'),
+                          Text('Pays : $_country'),
+                          Text('Langue : $_language'),
+                          Text('Canal préféré : $_preferredChannel'),
+                          Text('Catégorie : $_category'),
+                          Text('Sujet : ${_subjectController.text}'),
                           const SizedBox(height: 8),
-                          const Text('信息 :'),
+                          const Text('Message :'),
                           const SizedBox(height: 4),
                           Container(
                             width: double.infinity,
@@ -355,9 +343,7 @@ class _FifthPageState extends State<FifthPage> {
                             child: Text(_messageController.text),
                           ),
                           const SizedBox(height: 12),
-                          const Text(
-                            '谢谢 🌟',
-                          ),
+                          const Text('Merci 🌟'),
                         ],
                       ),
                     ),

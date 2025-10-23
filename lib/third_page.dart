@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'models/movie.dart';
 import 'services/movie_api.dart';
+import 'favorites_page.dart';
 
 class ThirdPage extends StatefulWidget {
   const ThirdPage({super.key});
@@ -61,6 +62,25 @@ class _ThirdPageState extends State<ThirdPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Films populaires'),
+        actions: [
+          TextButton.icon(
+            icon: const Icon(Icons.favorite, color: Colors.black),
+            label: const Text(
+              'Favoris',
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const FavoritesPage()),
+              );
+            },
+          ),
+        ],
+      ),
       body: RefreshIndicator(
         onRefresh: _refresh,
         child: FutureBuilder<List<Movie>>(
@@ -74,7 +94,7 @@ class _ThirdPageState extends State<ThirdPage> {
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Text(
-                    '加载失败：${snapshot.error}',
+                    'Échec du chargement : ${snapshot.error}',
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -82,7 +102,7 @@ class _ThirdPageState extends State<ThirdPage> {
             }
             final movies = snapshot.data ?? <Movie>[];
             if (movies.isEmpty) {
-              return const Center(child: Text('暂无电影'));
+              return const Center(child: Text('Aucun film disponible'));
             }
 
             return ListView.separated(
@@ -106,7 +126,9 @@ class _ThirdPageState extends State<ThirdPage> {
                   subtitle: Padding(
                     padding: const EdgeInsets.only(top: 4.0),
                     child: Text(
-                      m.overview.isEmpty ? '暂无简介' : m.overview,
+                      m.overview.isEmpty
+                          ? 'Aucun résumé disponible'
+                          : m.overview,
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -117,7 +139,8 @@ class _ThirdPageState extends State<ThirdPage> {
                     ),
                     color: liked ? Colors.red : null,
                     onPressed: () => _toggleLike(m.id),
-                    tooltip: liked ? '取消喜欢' : '喜欢',
+                    tooltip:
+                        liked ? 'Retirer des favoris' : 'Ajouter aux favoris',
                   ),
                   onTap: () => _toggleLike(m.id),
                 );
@@ -196,8 +219,7 @@ class ListTileSkeleton extends StatelessWidget {
             children: [
               Container(height: 12, color: Colors.grey.shade300),
               const SizedBox(height: 6),
-              Container(
-                  height: 12, width: 180, color: Colors.grey.shade300),
+              Container(height: 12, width: 180, color: Colors.grey.shade300),
             ],
           ),
         );
